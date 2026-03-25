@@ -59,9 +59,10 @@ pura-bmp resize input.bmp --width 200 --height 200 --out thumb.bmp
 
 ### Encode
 
-| Encoder | Time |
-|---------|------|
-| **pura-bmp** | **36 ms** |
+| Encoder | Time | vs ffmpeg |
+|---------|------|-----------|
+| **pura-bmp** | **35 ms** | **0.6× — faster than ffmpeg!** |
+| ffmpeg (C) | 58 ms | — |
 
 ## Why pure Ruby?
 
