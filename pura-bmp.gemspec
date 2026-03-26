@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "lib/pure/bmp/version"
+require_relative "lib/pura/bmp/version"
 
 Gem::Specification.new do |spec|
   spec.name = "pura-bmp"
