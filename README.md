@@ -1,6 +1,6 @@
 # pura-bmp
 
-A pure Ruby BMP decoder/encoder with zero C extension dependencies.
+A pure Ruby BMP decoder/encoder without additional image-processing libraries.
 
 Part of the **pura-*** series — pure Ruby image codec gems.
 
@@ -8,7 +8,7 @@ Part of the **pura-*** series — pure Ruby image codec gems.
 
 - BMP decoding and encoding (24-bit RGB)
 - Image resizing (bilinear / nearest-neighbor / fit / fill)
-- No native extensions, no FFI, no external dependencies
+- No image-specific native extension or FFI dependency
 - CLI tool included
 
 ## Installation
@@ -46,6 +46,8 @@ pura-bmp resize input.bmp --width 200 --height 200 --out thumb.bmp
 
 ## Benchmark
 
+These historical measurements include ffmpeg process startup. They do not compare against an in-process C codec or establish Rails pipeline throughput.
+
 400×400 image, Ruby 4.0.2 + YJIT.
 
 ### Decode
@@ -55,7 +57,6 @@ pura-bmp resize input.bmp --width 200 --height 200 --out thumb.bmp
 | **pura-bmp** | **39 ms** |
 | ffmpeg (C) | 59 ms |
 
-**pura-bmp is faster than ffmpeg** for BMP decoding. No other pure Ruby BMP implementation exists.
 
 ### Encode
 
@@ -67,8 +68,6 @@ pura-bmp resize input.bmp --width 200 --height 200 --out thumb.bmp
 ## Why pure Ruby?
 
 - **`gem install` and go** — no `brew install`, no `apt install`, no C compiler needed
-- **Faster than C** — pure Ruby BMP decode beats ffmpeg on this benchmark
-- **Works everywhere Ruby works** — CRuby, ruby.wasm, JRuby, TruffleRuby
 - **Part of pura-\*** — convert between JPEG, PNG, BMP, GIF, TIFF, WebP seamlessly
 
 ## Related gems
@@ -83,6 +82,12 @@ pura-bmp resize input.bmp --width 200 --height 200 --out thumb.bmp
 | [pura-ico](https://github.com/komagata/pura-ico) | ICO | ✅ Available |
 | [pura-webp](https://github.com/komagata/pura-webp) | WebP | ✅ Available |
 | [pura-image](https://github.com/komagata/pura-image) | All formats | ✅ Available |
+
+## Pixel model and limitations
+
+Images contain 8-bit RGB pixels. Decoded pixels are RGB; any alpha channel is discarded. Encoding writes 24-bit RGB BMP.
+
+`crop(x, y, width, height)` requires integer coordinates, positive dimensions, and a region entirely inside the image; invalid regions raise `ArgumentError`.
 
 ## License
 
